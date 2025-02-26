@@ -1,0 +1,41 @@
+{
+  "name": "task-manager-api",
+  "version": "1.0.0",
+  "description": "Task Manager App with Authentication",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "tsc && node build/app.js",
+    "dev": "nodemon",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/assessment-work/task-manager-api.git"
+  },
+  "keywords": [
+    "task-manager",
+    "todo"
+  ],
+  "author": "Abiraman K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/assessment-work/task-manager-api/issues"
+  },
+  "homepage": "https://github.com/assessment-work/task-manager-api#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/express": "^5.0.0",
+    "eslint": "^9.21.0",
+    "globals": "^16.0.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.25.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
