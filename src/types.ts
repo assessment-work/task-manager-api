@@ -6,4 +6,16 @@ type ValidationSchemaResult<T> = {
   errorMessage?: string;
 };
 
-export type { ValidationSchemaResult };
+type ServiceResponse<T> =
+  | {
+      success: true;
+      data: T;
+      error: null;
+    }
+  | {
+      success: false;
+      data: null;
+      error: string;
+    };
+
+export type { ValidationSchemaResult, ServiceResponse };

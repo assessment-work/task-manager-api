@@ -5,7 +5,7 @@ dotenv.config({
   path: ".env.local",
 });
 
-import { configs } from "../configs";
+import { configs } from "./configs";
 import { authRouter, taskRouter } from "./routes";
 import { connectDatabase } from "./database/connection";
 
@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (_, res) => {
-  res.json({ appVersion: `v${process.env.npm_package_version}` });
+  res.status(200).json({ appVersion: `v${process.env.npm_package_version}` });
 });
 
 app.use("/auth", authRouter());

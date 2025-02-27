@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { configs } from "../../configs";
+import { configs } from "../configs";
 
 async function connectDatabase() {
   const databaseUrl = `mongodb://${configs.DATABASE.HOST}:${configs.DATABASE.PORT}`;

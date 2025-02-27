@@ -4,7 +4,7 @@
   "description": "Task Manager App with Authentication",
   "main": "src/index.ts",
   "scripts": {
-    "start": "tsc && node build/app.js",
+    "start": "npm run build && node build/index.js",
     "dev": "nodemon",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
@@ -26,7 +26,11 @@
   "homepage": "https://github.com/assessment-work/task-manager-api#readme",
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/lodash": "^4.17.15",
+    "@types/mongoose-delete": "^1.0.6",
     "eslint": "^9.21.0",
     "globals": "^16.0.0",
     "nodemon": "^3.1.9",
@@ -35,9 +39,12 @@
     "typescript-eslint": "^8.25.0"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "mongoose": "^8.10.2",
     "mongoose-delete": "^1.0.2"
   }

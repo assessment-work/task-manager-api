@@ -1,8 +1,11 @@
 import { model, Schema } from "mongoose";
-import MongooseDelete, { SoftDeleteModel } from "mongoose-delete";
+import MongooseDelete from "mongoose-delete";
 
-interface User extends SoftDeleteModel {
-  id: string;
+import type { ObjectId } from "mongoose";
+import type { SoftDeleteDocument } from "mongoose-delete";
+
+interface User extends SoftDeleteDocument {
+  _id: ObjectId;
   email: string;
   password: string;
   name: string;
@@ -12,7 +15,6 @@ interface User extends SoftDeleteModel {
 
 const userSchema = new Schema<User>(
   {
-    id: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     name: { type: String, required: true },
