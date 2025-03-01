@@ -1,10 +1,9 @@
 import { model, Schema } from "mongoose";
-import MongooseDelete from "mongoose-delete";
+import MongooseSmartDelete from "mongoose-smart-delete";
 
 import type { ObjectId } from "mongoose";
-import type { SoftDeleteDocument } from "mongoose-delete";
 
-interface User extends SoftDeleteDocument {
+interface User {
   _id: ObjectId;
   email: string;
   password: string;
@@ -15,14 +14,20 @@ interface User extends SoftDeleteDocument {
 
 const userSchema = new Schema<User>(
   {
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     name: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-userSchema.plugin(MongooseDelete, { deletedBy: true, deletedByType: String });
+userSchema.plugin(MongooseSmartDelete, {
+  deletedAt: true,
+  deletedBy: {
+    field: "deletedBy",
+    ref: "User",
+  },
+});
 
 const UserModel = model<User>("User", userSchema);
 

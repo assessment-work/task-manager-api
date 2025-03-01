@@ -1,20 +1,14 @@
 import { Router } from "express";
+import { taskController } from "../controllers";
 
 function taskRouter() {
   const router = Router();
 
-  router.get("/", (_, res) => {
-    res.json({
-      data: [
-        {
-          id: 1,
-          title: "Task 1",
-          description: "This is task 1",
-          isCompleted: false,
-        },
-      ],
-    });
-  });
+  router.post("/", taskController.create);
+  router.get("/", taskController.getAll);
+  router.get("/:id", taskController.getById);
+  router.put("/:id", taskController.edit);
+  router.delete("/:id", taskController.delete);
 
   return router;
 }

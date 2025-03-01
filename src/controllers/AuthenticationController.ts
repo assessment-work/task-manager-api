@@ -1,4 +1,4 @@
-import _ from "lodash";
+import lodash from "lodash";
 
 import type { Request, Response } from "express";
 
@@ -19,11 +19,11 @@ import type {
   RegisterRequestDTO,
   RegisterResponseDTO,
 } from "../dtos";
-import type { User } from "../models";
+import { User } from "../models";
 
 async function login(req: Request, res: Response) {
   const validation = validateSchema<LoginRequestDTO>({
-    schema: validations.auth.LoginSchema,
+    schema: validations.auth.login,
     data: req.body,
   });
 
@@ -45,8 +45,8 @@ async function login(req: Request, res: Response) {
   if (!userExist.success) {
     sendResponse({
       res,
-      statusCode: configs.HTTP_STATUS_CODE.NotFound,
-      error: userExist.error,
+      statusCode: userExist.error.statusCode,
+      error: userExist.error.message,
     });
     return;
   }
@@ -65,14 +65,15 @@ async function login(req: Request, res: Response) {
     return;
   }
 
-  const token = generateJwt(email);
+  const token = generateJwt({ _id: userExist.data._id, email });
 
   sendResponse<LoginResponseDTO>({
     res,
     statusCode: configs.HTTP_STATUS_CODE.Ok,
     data: {
       token,
-      user: _.omit(userExist.data.toObject() as User, ["password"]),
+      // @ts-expect-error .toObject not defined in types of mongoose-smart-delete plugin
+      user: lodash.omit(userExist.data.toObject() as User, ["password"]),
     },
   });
 
@@ -81,7 +82,7 @@ async function login(req: Request, res: Response) {
 
 async function register(req: Request, res: Response) {
   const validation = validateSchema<RegisterRequestDTO>({
-    schema: validations.auth.RegisterSchema,
+    schema: validations.auth.register,
     data: req.body,
   });
 
@@ -121,20 +122,21 @@ async function register(req: Request, res: Response) {
   if (!userCreation.success) {
     sendResponse({
       res,
-      statusCode: configs.HTTP_STATUS_CODE.InternalServerError,
-      error: userCreation.error,
+      statusCode: userCreation.error.statusCode,
+      error: userCreation.error.message,
     });
     return;
   }
 
-  const token = generateJwt(email);
+  const token = generateJwt({ _id: userCreation.data._id, email });
 
   sendResponse<RegisterResponseDTO>({
     res,
     statusCode: configs.HTTP_STATUS_CODE.Created,
     data: {
       token,
-      user: _.omit(userCreation.data.toObject() as User, ["password"]),
+      // @ts-expect-error .toObject not defined in types of mongoose-smart-delete plugin
+      user: lodash.omit(userCreation.data.toObject() as User, ["password"]),
     },
   });
   return;

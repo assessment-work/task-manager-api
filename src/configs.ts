@@ -14,7 +14,9 @@ const DATABASE_PASSWORD =
 // Auth
 const PASSWORD_SALT_ROUNDS =
   process.env.TASK_MANAGER_API_PASSWORD_SALT_ROUNDS ?? "10";
-const JWT_SECRET = process.env.TASK_MANAGER_API_JWT_SECRET ?? "secret";
+const JWT_SECRET =
+  process.env.TASK_MANAGER_API_JWT_SECRET ??
+  "pneumonoultramicroscopicsilicovolcanoconiosis";
 const JWT_EXPIRES_IN = process.env.TASK_MANAGER_API_JWT_EXPIRES_IN ?? "3600";
 
 enum HTTP_STATUS_CODE {

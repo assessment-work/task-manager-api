@@ -1,12 +1,16 @@
 import bcrypt from "bcrypt";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-import type { Response } from "express";
+import type { JwtPayload } from "jsonwebtoken";
 import type { ObjectSchema, ValidationErrorItem } from "joi";
 
 import { configs } from "./configs";
 
-import type { ValidationSchemaResult } from "./types";
+import type {
+  AuthTokenData,
+  SendResponse,
+  ValidationSchemaResult,
+} from "./types";
 
 function validateSchema<T>(args: {
   schema: ObjectSchema<T>;
@@ -54,11 +58,13 @@ async function comparePassword(
   return isValidPassword;
 }
 
-function generateJwt(email: string): string {
+function generateJwt(data: AuthTokenData): string {
   const token = jwt.sign(
     {
-      data: { email },
-      exp: parseInt(configs.AUTH.JWT_EXPIRES_IN, 10),
+      data,
+      exp:
+        Math.floor(Date.now() / 1000) +
+        parseInt(configs.AUTH.JWT_EXPIRES_IN, 10),
     },
     configs.AUTH.JWT_SECRET
   );
@@ -72,12 +78,7 @@ function verifyJwt(token: string): string | JwtPayload {
   return decoded;
 }
 
-function sendResponse<T>(args: {
-  res: Response;
-  statusCode: number;
-  data?: T;
-  error?: string;
-}) {
+function sendResponse<T>(args: SendResponse<T>) {
   args.res.status(args.statusCode).json({
     success: !args.error,
     data: args.data ?? null,

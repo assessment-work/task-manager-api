@@ -8,6 +8,7 @@ dotenv.config({
 import { configs } from "./configs";
 import { authRouter, taskRouter } from "./routes";
 import { connectDatabase } from "./database/connection";
+import { middleware } from "./middlewares";
 
 const app = express();
 
@@ -18,13 +19,13 @@ app.get("/", (_, res) => {
 });
 
 app.use("/auth", authRouter());
-app.use("/task", taskRouter());
+app.use("/tasks", middleware.isAuthorized, taskRouter());
 
 async function startServer() {
   await connectDatabase();
 
   app.listen(configs.SERVER.PORT, () => {
-    console.log(
+    console.info(
       `Server is running on ${configs.SERVER.HOST}:${configs.SERVER.PORT}`
     );
   });

@@ -1,7 +1,9 @@
-import { authSchema } from "./AuthSchema";
+import { authValidationSchema } from "./AuthValidationSchema";
+import { taskValidationSchema } from "./TaskValidationSchema";
 
 const validations = {
-  auth: authSchema,
+  auth: authValidationSchema,
+  task: taskValidationSchema,
 };
 
 export { validations };
