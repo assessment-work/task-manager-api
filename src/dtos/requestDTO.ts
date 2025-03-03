@@ -15,6 +15,7 @@ interface RegisterRequestDTO {
 interface CreateTaskRequestDTO {
   title: string;
   description: string;
+  status?: TASK_STATUS;
 }
 
 type EditTaskRequestParamsDTO = { id: ObjectId };

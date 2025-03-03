@@ -5,6 +5,7 @@ import { TaskStatus } from "../models";
 const CreateTaskValidationSchema = Joi.object<CreateTaskRequestDTO>({
   title: Joi.string().required(),
   description: Joi.string().required(),
+  status: Joi.string().valid(TaskStatus.COMPLETED, TaskStatus.NOT_COMPLETED),
 });
 
 const EditTaskValidationSchema = Joi.object<EditTaskRequestDTO>({

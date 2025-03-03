@@ -1,6 +1,6 @@
 import type { ObjectId } from "mongoose";
 
-import { TaskModel } from "../models";
+import { TaskModel, TaskStatus } from "../models";
 import { configs } from "../configs";
 
 import type { Task } from "../models";
@@ -14,6 +14,7 @@ async function createTask(
     const newTask = await TaskModel.create({
       title: task.title,
       description: task.description,
+      status: task.status ?? TaskStatus.NOT_COMPLETED,
       createdBy,
     });
 
