@@ -18,6 +18,8 @@ const JWT_SECRET =
   process.env.TASK_MANAGER_API_JWT_SECRET ??
   "pneumonoultramicroscopicsilicovolcanoconiosis";
 const JWT_EXPIRES_IN = process.env.TASK_MANAGER_API_JWT_EXPIRES_IN ?? "3600";
+const JWT_REFRESH_EXPIRES_IN =
+  process.env.TASK_MANAGER_API_JWT_REFRESH_EXPIRES_IN ?? "4200";
 
 enum HTTP_STATUS_CODE {
   Ok = 200,
@@ -60,9 +62,10 @@ const DATABASE = {
 };
 
 const AUTH = {
-  PASSWORD_SALT_ROUNDS: PASSWORD_SALT_ROUNDS,
+  PASSWORD_SALT_ROUNDS,
   JWT_SECRET,
   JWT_EXPIRES_IN,
+  JWT_REFRESH_EXPIRES_IN,
 };
 
 const configs = { SERVER, DATABASE, AUTH, HTTP_STATUS_CODE };

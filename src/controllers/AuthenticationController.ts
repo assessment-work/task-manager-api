@@ -12,14 +12,16 @@ import {
 import { validations } from "../validations";
 import { userService } from "../services";
 import { configs } from "../configs";
-
-import type {
-  LoginRequestDTO,
-  LoginResponseDTO,
-  RegisterRequestDTO,
-  RegisterResponseDTO,
-} from "../dtos";
 import { User } from "../models";
+
+import {
+  GenerateRefreshTokenResponseDTO,
+  type LoginRequestDTO,
+  type LoginResponseDTO,
+  type RegisterRequestDTO,
+  type RegisterResponseDTO,
+} from "../dtos";
+import type { AuthRequest, AuthTokenData } from "../types";
 
 async function login(req: Request, res: Response) {
   const validation = validateSchema<LoginRequestDTO>({
@@ -66,12 +68,17 @@ async function login(req: Request, res: Response) {
   }
 
   const token = generateJwt({ _id: userExist.data._id, email });
+  const refreshToken = generateJwt(
+    { _id: userExist.data._id, email },
+    configs.AUTH.JWT_REFRESH_EXPIRES_IN
+  );
 
   sendResponse<LoginResponseDTO>({
     res,
     statusCode: configs.HTTP_STATUS_CODE.Ok,
     data: {
       token,
+      refreshToken,
       // @ts-expect-error .toObject not defined in types of mongoose-smart-delete plugin
       user: lodash.omit(userExist.data.toObject() as User, ["password"]),
     },
@@ -129,12 +136,17 @@ async function register(req: Request, res: Response) {
   }
 
   const token = generateJwt({ _id: userCreation.data._id, email });
+  const refreshToken = generateJwt(
+    { _id: userCreation.data._id, email },
+    configs.AUTH.JWT_REFRESH_EXPIRES_IN
+  );
 
   sendResponse<RegisterResponseDTO>({
     res,
     statusCode: configs.HTTP_STATUS_CODE.Created,
     data: {
       token,
+      refreshToken,
       // @ts-expect-error .toObject not defined in types of mongoose-smart-delete plugin
       user: lodash.omit(userCreation.data.toObject() as User, ["password"]),
     },
@@ -142,9 +154,31 @@ async function register(req: Request, res: Response) {
   return;
 }
 
+async function generateRefreshToken(req: AuthRequest, res: Response) {
+  const user: AuthTokenData = req.user;
+
+  const token = generateJwt({ _id: user._id, email: user.email });
+  const refreshToken = generateJwt(
+    { _id: user._id, email: user.email },
+    configs.AUTH.JWT_REFRESH_EXPIRES_IN
+  );
+
+  sendResponse<GenerateRefreshTokenResponseDTO>({
+    res,
+    statusCode: configs.HTTP_STATUS_CODE.Ok,
+    data: {
+      token,
+      refreshToken,
+    },
+  });
+
+  return;
+}
+
 const authenticationController = {
   login,
   register,
+  generateRefreshToken,
 };
 
 export { authenticationController };

@@ -19,7 +19,7 @@ async function isAuthorized(
       res,
       statusCode: configs.HTTP_STATUS_CODE.Unauthorized,
       data: null,
-      error: "Not Authorized",
+      error: "Unauthorized",
     });
 
     return;
@@ -38,12 +38,13 @@ async function isAuthorized(
     return;
   } catch (error: unknown) {
     const err = error as Error;
+    console.error("Auth token validation error: ", err.message);
 
     sendResponse({
       res,
       statusCode: configs.HTTP_STATUS_CODE.Unauthorized,
       data: null,
-      error: err.message,
+      error: "Session timeout",
     });
     return;
   }

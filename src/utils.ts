@@ -58,13 +58,13 @@ async function comparePassword(
   return isValidPassword;
 }
 
-function generateJwt(data: AuthTokenData): string {
+function generateJwt(data: AuthTokenData, expiresIn?: string): string {
   const token = jwt.sign(
     {
       data,
       exp:
         Math.floor(Date.now() / 1000) +
-        parseInt(configs.AUTH.JWT_EXPIRES_IN, 10),
+        parseInt(expiresIn ?? configs.AUTH.JWT_EXPIRES_IN, 10),
     },
     configs.AUTH.JWT_SECRET
   );
